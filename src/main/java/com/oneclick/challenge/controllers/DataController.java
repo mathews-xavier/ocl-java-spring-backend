@@ -4,6 +4,7 @@ import com.oneclick.challenge.models.Data;
 import com.oneclick.challenge.models.User;
 import com.oneclick.challenge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,11 @@ public class DataController {
 
     @PostMapping("/saveData/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> saveData(@PathVariable Long id,@RequestBody List<Data> dataList) {
+    public ResponseEntity<String> saveData(@PathVariable Long id,@RequestBody List<Data> dataList) {
         Optional<User> user = repo.findById(id);
         user.get().setData(dataList);
         repo.save(user.get());
-        return (ResponseEntity<?>) ResponseEntity.ok();
+        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
     }
 
     @GetMapping("/getData/{id}")
